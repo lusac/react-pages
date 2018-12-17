@@ -1,38 +1,6 @@
 import React from 'react'
 import './index.scss'
-
-const components = [
-  {
-    id: 1,
-    name: 'Header',
-    thumbnail: 'https://via.placeholder.com/200x150'
-  },
-  {
-    id: 2,
-    name: 'Carroussel',
-    thumbnail: 'https://via.placeholder.com/200x150'
-  },
-  {
-    id: 3,
-    name: 'Box 1',
-    thumbnail: 'https://via.placeholder.com/200x150'
-  },
-  {
-    id: 4,
-    name: 'Box 2',
-    thumbnail: 'https://via.placeholder.com/200x150'
-  },
-  {
-    id: 5,
-    name: 'Box 3',
-    thumbnail: 'https://via.placeholder.com/200x150'
-  },
-  {
-    id: 6,
-    name: 'footer',
-    thumbnail: 'https://via.placeholder.com/200x150'
-  }
-]
+import { components } from '../../data/components';
 
 const PopinItem = ({ item, selected, clickHandler} = {}) => {
   const classNames = 'editor__popin__item ' + (selected ? ' editor__popin__item--selected' : '');

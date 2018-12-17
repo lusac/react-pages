@@ -65,6 +65,7 @@
         padding: 20px;
         display: flex;
         flex-wrap: wrap;
+        overflow-y: scroll;
         align-content: flex-start;
       }
 
@@ -82,11 +83,13 @@
     }
 
     &__item {
-      margin: 5px;
-      flex: 0 1 22%;
       cursor: pointer;
+      overflow: hidden;
+      max-height: 178px;
       position: relative;
+      margin: 10px 0 0 1%;
       border: 1px solid #CCC;
+      width: calc(100% * (1/4) - 10px - 1px);
 
       &--selected {
         border-color: #AAA;
