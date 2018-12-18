@@ -42,11 +42,11 @@ const Header = ({ onChangeHandler } = {}) => {
   )
 }
 
-const Footer = ({ onCloseButton } = {}) => {
+const Footer = ({ onCloseButton, onAddComponent, selectedItem } = {}) => {
   return (
     <div className="editor__popin__content__footer">
       <button onClick={onCloseButton}>cancelar</button>
-      <button>adicionar</button>
+      <button onClick={onAddComponent.bind(this, selectedItem)}>adicionar</button>
     </div>
   )
 }
@@ -58,10 +58,20 @@ const Section = ({ components, onItemClick, selectedItem } = {}) => {
         <PopinItem
           key={i}
           item={c}
-          selected={c.id === selectedItem}
-          onClickHandler={onItemClick.bind(this)}
+          selected={selectedItem && c.id === selectedItem.id}
+          onClickHandler={onItemClick.bind(this, c)}
         />))}
     </div>
+  )
+}
+
+const AddedComponents = ({ components } = {}) => {
+  return (
+    components.map((c) => (
+      <div key={c.id} className="editor__component">
+        <p>{c.name}</p>
+      </div>
+    ))
   )
 }
 
@@ -69,7 +79,19 @@ export default class Editor extends React.Component {
   state = {
     searchTerm: '',
     showPopin: false,
-    selectedItem: null
+    selectedItem: null,
+    addedComponents: [
+      {
+        id: 10,
+        name: 'Box 6',
+        thumbnail: 'https://via.placeholder.com/200x150'
+      },
+      {
+        id: 11,
+        name: 'footer 2',
+        thumbnail: 'https://via.placeholder.com/200x150'
+      }
+    ]
   }
 
   searchOnChange(e) {
@@ -84,13 +106,21 @@ export default class Editor extends React.Component {
 
   closePopin() {
     this.setState({
-      showPopin: false
+      showPopin: false,
+      selectedItem: null
     })
   }
 
-  itemOnClick(id) {
+  addComponent(component) {
     this.setState({
-      selectedItem: id
+      addedComponents: [...this.state.addedComponents, component]
+    })
+    this.closePopin()
+  }
+
+  itemOnClick(item) {
+    this.setState({
+      selectedItem: item
     })
   }
 
@@ -102,7 +132,8 @@ export default class Editor extends React.Component {
 
   render() {
     return (
-      <div>
+      <div className="editor">
+        <AddedComponents components={this.state.addedComponents} />
         <AddButton onClickHandler={this.openPopin.bind(this)} />
 
         {this.state.showPopin &&
@@ -113,7 +144,10 @@ export default class Editor extends React.Component {
                 components={this.getComponents()}
                 selectedItem={this.state.selectedItem}
                 onItemClick={this.itemOnClick.bind(this)} />
-              <Footer onCloseButton={this.closePopin.bind(this)} />
+              <Footer
+                selectedItem={this.state.selectedItem}
+                onCloseButton={this.closePopin.bind(this)}
+                onAddComponent={this.addComponent.bind(this)} />
             </div>
           </div>
         }
