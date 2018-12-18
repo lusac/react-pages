@@ -88,7 +88,7 @@ const AddedComponents = ({ components, onRemoveClick } = {}) => {
     components.map((c, i) => (
       <div key={i} className="editor__component">
         <p>
-          (<a onClick={onRemoveClick.bind(this, c)}>remove</a>)
+          (<a onClick={onRemoveClick.bind(this, i)}>remove</a>)
           {c.name}
         </p>
       </div>
@@ -134,8 +134,8 @@ export default class Editor extends React.Component {
     this.togglePopin()
   }
 
-  removeComponent(component) {
-    const updateComponents = this.state.addedComponents.filter((c) => c.id !== component.id)
+  removeComponent(index) {
+    const updateComponents = this.state.addedComponents.filter((c, i) => i !== index)
     this.setState({
       addedComponents: updateComponents
     })
