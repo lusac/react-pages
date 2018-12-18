@@ -25,11 +25,51 @@ const PopinItem = ({ item, selected, onClickHandler} = {}) => {
   )
 }
 
+const AddButton = ({ onClickHandler } = {}) => {
+  return (
+    <div className="editor__add" onClick={onClickHandler}>
+      + adicionar
+    </div>
+  )
+}
+
+const Header = ({ onChangeHandler } = {}) => {
+  return (
+    <div className="editor__popin__content__header">
+      <h2>Choose a widget</h2>
+      <SearchInput onChangeHandler={onChangeHandler} />
+    </div>
+  )
+}
+
+const Footer = ({ onCloseButton } = {}) => {
+  return (
+    <div className="editor__popin__content__footer">
+      <button onClick={onCloseButton}>cancelar</button>
+      <button>adicionar</button>
+    </div>
+  )
+}
+
+const Section = ({ components, onItemClick, selectedItem } = {}) => {
+  return (
+    <div className="editor__popin__content__section">
+      {components.map((c, i) => (
+        <PopinItem
+          key={i}
+          item={c}
+          selected={c.id === selectedItem}
+          onClickHandler={onItemClick.bind(this)}
+        />))}
+    </div>
+  )
+}
+
 export default class Editor extends React.Component {
   state = {
     searchTerm: '',
-    showPopin: true,
-    itemSelected: null
+    showPopin: false,
+    selectedItem: null
   }
 
   searchOnChange(e) {
@@ -50,7 +90,7 @@ export default class Editor extends React.Component {
 
   itemOnClick(id) {
     this.setState({
-      itemSelected: id
+      selectedItem: id
     })
   }
 
@@ -63,30 +103,17 @@ export default class Editor extends React.Component {
   render() {
     return (
       <div>
-        <div className="editor" onClick={this.openPopin.bind(this)}>
-          + adicionar
-        </div>
+        <AddButton onClickHandler={this.openPopin.bind(this)} />
 
         {this.state.showPopin &&
           <div className="editor__popin">
             <div className="editor__popin__content">
-              <div className="editor__popin__content__header">
-                <h2>Choose a widget</h2>
-                <SearchInput onChangeHandler={this.searchOnChange.bind(this)} />
-              </div>
-              <div className="editor__popin__content__section">
-                {this.getComponents().map((c, i) => (
-                  <PopinItem
-                    key={i}
-                    item={c}
-                    selected={c.id === this.state.itemSelected}
-                    onClickHandler={this.itemOnClick.bind(this)}
-                  />))}
-              </div>
-              <div className="editor__popin__content__footer">
-                <button onClick={this.closePopin.bind(this)}>cancelar</button>
-                <button>adicionar</button>
-              </div>
+              <Header onChangeHandler={this.searchOnChange.bind(this)} />
+              <Section
+                components={this.getComponents()}
+                selectedItem={this.state.selectedItem}
+                onItemClick={this.itemOnClick.bind(this)} />
+              <Footer onCloseButton={this.closePopin.bind(this)} />
             </div>
           </div>
         }

@@ -1,17 +1,19 @@
 .editor {
-  padding: 25px;
-  color: #CCC;
-  cursor: pointer;
-  display: flex;
-  font-weight: bold;
-  border-radius: 5px;
-  align-items: center;
-  border: 1px solid #CCC;
-  justify-content: center;
+  &__add {
+    padding: 25px;
+    color: #CCC;
+    cursor: pointer;
+    display: flex;
+    font-weight: bold;
+    border-radius: 5px;
+    align-items: center;
+    border: 1px solid #CCC;
+    justify-content: center;
 
-  &:hover {
-    color: #AAA;
-    border-color: #AAA;
+    &:hover {
+      color: #AAA;
+      border-color: #AAA;
+    }
   }
 
   &__popin {
