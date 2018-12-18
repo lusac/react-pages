@@ -67,8 +67,8 @@ const Section = ({ components, onItemClick, selectedItem } = {}) => {
 
 const AddedComponents = ({ components } = {}) => {
   return (
-    components.map((c) => (
-      <div key={c.id} className="editor__component">
+    components.map((c, i) => (
+      <div key={i} className="editor__component">
         <p>{c.name}</p>
       </div>
     ))
