@@ -65,11 +65,14 @@ const Section = ({ components, onItemClick, selectedItem } = {}) => {
   )
 }
 
-const AddedComponents = ({ components } = {}) => {
+const AddedComponents = ({ components, onRemoveClick } = {}) => {
   return (
     components.map((c, i) => (
       <div key={i} className="editor__component">
-        <p>{c.name}</p>
+        <p>
+          (<a onClick={onRemoveClick.bind(this, c)}>remove</a>)
+          {c.name}
+        </p>
       </div>
     ))
   )
@@ -118,6 +121,13 @@ export default class Editor extends React.Component {
     this.closePopin()
   }
 
+  removeComponent(component) {
+    const updateComponents = this.state.addedComponents.filter((c) => c.id !== component.id)
+    this.setState({
+      addedComponents: updateComponents
+    })
+  }
+
   itemOnClick(item) {
     this.setState({
       selectedItem: item
@@ -133,7 +143,10 @@ export default class Editor extends React.Component {
   render() {
     return (
       <div className="editor">
-        <AddedComponents components={this.state.addedComponents} />
+        <AddedComponents
+          components={this.state.addedComponents}
+          onRemoveClick={this.removeComponent.bind(this)} />
+
         <AddButton onClickHandler={this.openPopin.bind(this)} />
 
         {this.state.showPopin &&
