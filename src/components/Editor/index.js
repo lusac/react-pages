@@ -101,16 +101,11 @@ export default class Editor extends React.Component {
     this.setState({ searchTerm: e.target.value })
   }
 
-  openPopin() {
+  togglePopin() {
+    const selectedItem = !this.state.showPopin ? selectedItem : ''
     this.setState({
-      showPopin: true
-    })
-  }
-
-  closePopin() {
-    this.setState({
-      showPopin: false,
-      selectedItem: null
+      selectedItem: selectedItem,
+      showPopin: !this.state.showPopin
     })
   }
 
@@ -118,7 +113,7 @@ export default class Editor extends React.Component {
     this.setState({
       addedComponents: [...this.state.addedComponents, component]
     })
-    this.closePopin()
+    this.togglePopin()
   }
 
   removeComponent(component) {
@@ -147,7 +142,7 @@ export default class Editor extends React.Component {
           components={this.state.addedComponents}
           onRemoveClick={this.removeComponent.bind(this)} />
 
-        <AddButton onClickHandler={this.openPopin.bind(this)} />
+        <AddButton onClickHandler={this.togglePopin.bind(this)} />
 
         {this.state.showPopin &&
           <div className="editor__popin">
@@ -159,7 +154,7 @@ export default class Editor extends React.Component {
                 onItemClick={this.itemOnClick.bind(this)} />
               <Footer
                 selectedItem={this.state.selectedItem}
-                onCloseButton={this.closePopin.bind(this)}
+                onCloseButton={this.togglePopin.bind(this)}
                 onAddComponent={this.addComponent.bind(this)} />
             </div>
           </div>
