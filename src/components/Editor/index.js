@@ -87,7 +87,7 @@ const AddedComponents = ({ components, onRemoveClick } = {}) => {
   return (
     components.map((Component, i) => (
       <div key={i} className="editor__component">
-        (<a onClick={onRemoveClick.bind(this, i)}>remove</a>)
+        (<span onClick={onRemoveClick.bind(this, i)}>remove</span>)
         {<Component.RenderCMA />}
       </div>
     ))
@@ -107,9 +107,8 @@ export default class Editor extends React.Component {
   }
 
   togglePopin() {
-    const selectedItem = !this.state.showPopin ? selectedItem : ''
     this.setState({
-      selectedItem: selectedItem,
+      selectedItem: null,
       showPopin: !this.state.showPopin
     })
   }
@@ -142,6 +141,7 @@ export default class Editor extends React.Component {
       if (c.RenderCMA.getName().toLocaleLowerCase().indexOf(this.state.searchTerm.toLocaleLowerCase()) >= 0) {
         return c
       }
+      return false
     })
   }
 
