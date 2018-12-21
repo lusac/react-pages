@@ -15,6 +15,14 @@
   "plugins": [
     "react"
   ],
+  "globals": {
+    "require": true,
+    "exports": true,
+    "process": true,
+    "console": true,
+    "global": true,
+    "module": true
+  },
   "parser": "babel-eslint",
   "extends": ["eslint:recommended", "plugin:react/recommended"]
 }
