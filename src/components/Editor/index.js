@@ -1,7 +1,7 @@
 import React from 'react'
 import './index.scss'
 import Search from '@material-ui/icons/Search'
-import { components } from '../../data/components'
+import * as components from '../../external/index'
 
 const SearchInput = ({ onChangeHandler } = {}) => {
   return (
@@ -18,8 +18,8 @@ const PopinItem = ({ item, selected, onClickHandler} = {}) => {
   return (
     <div className={classNames} onClick={onClickHandler.bind(this, item.id)}>
       <figure>
-        <img src={item.thumbnail} />
-        <figcaption>{item.name}</figcaption>
+        <img src={item.RenderCMA.getThumbnail()} />
+        <figcaption>{item.RenderCMA.getName()}</figcaption>
       </figure>
     </div>
   )
@@ -33,7 +33,7 @@ const AddButton = ({ onClickHandler } = {}) => {
   )
 }
 
-const Header = ({ onChangeHandler } = {}) => {
+const PopinHeader = ({ onChangeHandler } = {}) => {
   return (
     <div className="editor__popin__content__header">
       <h2>Choose a widget</h2>
@@ -42,7 +42,7 @@ const Header = ({ onChangeHandler } = {}) => {
   )
 }
 
-const Footer = ({ onCloseButton, onAddComponent, selectedItem } = {}) => {
+const PopinFooter = ({ onCloseButton, onAddComponent, selectedItem } = {}) => {
   return (
     <div className="editor__popin__content__footer">
       <button onClick={onCloseButton}>cancelar</button>
@@ -51,14 +51,14 @@ const Footer = ({ onCloseButton, onAddComponent, selectedItem } = {}) => {
   )
 }
 
-const Section = ({ components, onItemClick, selectedItem } = {}) => {
+const PopinSection = ({ components, onItemClick, selectedItem } = {}) => {
   return (
     <div className="editor__popin__content__section">
       {components.map((c, i) => (
         <PopinItem
           key={i}
           item={c}
-          selected={selectedItem && c.id === selectedItem.id}
+          selected={selectedItem && c === selectedItem}
           onClickHandler={onItemClick.bind(this, c)}
         />))}
     </div>
@@ -69,12 +69,12 @@ const Popin = ({ onChangeHandler, selectedItem, onItemClick, onCloseButton, onAd
   return (
     <div className="editor__popin">
       <div className="editor__popin__content">
-        <Header onChangeHandler={onChangeHandler} />
-        <Section
+        <PopinHeader onChangeHandler={onChangeHandler} />
+        <PopinSection
           components={components}
           selectedItem={selectedItem}
           onItemClick={onItemClick} />
-        <Footer
+        <PopinFooter
           selectedItem={selectedItem}
           onCloseButton={onCloseButton}
           onAddComponent={onAddComponent} />
@@ -85,12 +85,10 @@ const Popin = ({ onChangeHandler, selectedItem, onItemClick, onCloseButton, onAd
 
 const AddedComponents = ({ components, onRemoveClick } = {}) => {
   return (
-    components.map((c, i) => (
+    components.map((Component, i) => (
       <div key={i} className="editor__component">
-        <p>
-          (<a onClick={onRemoveClick.bind(this, i)}>remove</a>)
-          {c.name}
-        </p>
+        (<a onClick={onRemoveClick.bind(this, i)}>remove</a>)
+        {<Component.RenderCMA />}
       </div>
     ))
   )
@@ -101,18 +99,7 @@ export default class Editor extends React.Component {
     searchTerm: '',
     showPopin: false,
     selectedItem: null,
-    addedComponents: [
-      {
-        id: 10,
-        name: 'Box 6',
-        thumbnail: 'https://via.placeholder.com/200x150'
-      },
-      {
-        id: 11,
-        name: 'footer 2',
-        thumbnail: 'https://via.placeholder.com/200x150'
-      }
-    ]
+    addedComponents: []
   }
 
   searchOnChange(e) {
@@ -149,8 +136,13 @@ export default class Editor extends React.Component {
 
   getComponents() {
     if (this.state.searchTerm.length === 0)
-      return components
-    return components.filter((c) => c.name.toLocaleLowerCase().indexOf(this.state.searchTerm.toLocaleLowerCase()) >= 0)
+      return components.default
+
+    return components.default.filter((c) => {
+      if (c.RenderCMA.getName().toLocaleLowerCase().indexOf(this.state.searchTerm.toLocaleLowerCase()) >= 0) {
+        return c
+      }
+    })
   }
 
   render() {

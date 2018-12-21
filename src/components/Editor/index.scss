@@ -92,7 +92,7 @@
       position: relative;
       margin: 10px 0 0 1%;
       border: 1px solid #CCC;
-      width: calc(100% * (1/4) - 10px - 1px);
+      // width: calc(100% * (1/4) - 10px - 1px);
 
       &--selected {
         border-color: #AAA;
