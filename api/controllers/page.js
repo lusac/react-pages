@@ -3,26 +3,33 @@ const Page = require('../models/page');
 exports.page_create = function (req, res) {
   let page = new Page({
     name: req.body.name,
+    content: req.body.content
   });
 
-  page.save(function (err, next) {
-    if (err) {
-      return next(err);
-    }
-    res.send('Page Created successfully - ' + page.id);
-  })
+  page
+    .save()
+    .then((page) => res.send('Page Created successfully - ' + page.id))
+    .catch(err => err)
 };
 
-exports.page_update = function (req, res, next) {
-  Page.findByIdAndUpdate(req.params.id, {$set: req.body}, function (err) {
-    if (err) return next(err);
-    res.send('Product udpated.');
-  });
+exports.page_update = function (req, res) {
+  Page
+    .findByIdAndUpdate(req.params.id, {$set: req.body})
+    .then(() => res.send('Product udpated.'))
+    .catch(err => err);
 };
 
-exports.page_details = function (req, res, next) {
-  Page.findById(req.params.id, function (err, page) {
-    if (err) return next(err);
-    res.send(page);
-  })
+exports.page_details = function (req, res) {
+  Page
+    .findById(req.params.id)
+    .then((page) => res.send(page))
+    .catch(err => err)
+};
+
+exports.pages = function (req, res) {
+  Page
+    .find({})
+    .then(function (pages) {
+      res.send(pages);
+    });
 };
