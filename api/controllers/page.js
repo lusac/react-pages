@@ -1,6 +1,6 @@
 const Page = require('../models/page');
 
-exports.page_create = function (req, res) {
+exports.pageCreate = function (req, res) {
   let page = new Page({
     name: req.body.name,
     content: req.body.content
@@ -12,14 +12,14 @@ exports.page_create = function (req, res) {
     .catch(err => err)
 };
 
-exports.page_update = function (req, res) {
+exports.pageUpdate = function (req, res) {
   Page
     .findByIdAndUpdate(req.params.id, {$set: req.body})
     .then(() => res.send('Product udpated.'))
     .catch(err => err);
 };
 
-exports.page_details = function (req, res) {
+exports.pageDetails = function (req, res) {
   Page
     .findById(req.params.id)
     .then((page) => res.send(page))

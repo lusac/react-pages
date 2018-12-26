@@ -5,12 +5,12 @@ const controller = require('../controllers/page');
 
 // Get
 router.get('/', controller.pages)
-router.get('/:id', controller.page_details);
+router.get('/:id', controller.pageDetails);
 
 // Post
-router.post('/create', controller.page_create)
+router.post('/create', controller.pageCreate)
 
 // Put
-router.put('/:id/update', controller.page_update);
+router.put('/:id/update', controller.pageUpdate);
 
 module.exports = router;
