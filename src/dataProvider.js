@@ -27,6 +27,7 @@ export default (type, resource, params) => {
   const options = {
     headers : new Headers({
       Accept: 'application/json',
+      'Content-Type': 'application/json'
     }),
   };
   switch (type) {

@@ -14,6 +14,6 @@ router.options('/', controller.pages);
 router.post('/create', controller.pageCreate);
 
 // Put
-router.put('/:id/update', controller.pageUpdate);
+router.put('/:id', controller.pageUpdate);
 
 module.exports = router;

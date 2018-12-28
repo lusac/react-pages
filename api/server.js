@@ -13,8 +13,7 @@ let db = mongoose.connection;
 db.on('error', console.error.bind(console, 'MongoDB connection error:'));
 
 const app = express();
-app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: false}));
+
 app.use((_, res, next) => {
   // Website you wish to allow to connect
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -23,7 +22,7 @@ app.use((_, res, next) => {
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS, PUT, PATCH, DELETE');
 
   // Request headers you wish to allow
-  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type, X-Total-Count');
+  res.setHeader('Access-Control-Allow-Headers', 'X-Requested-With,content-type');
   res.setHeader('Access-Control-Expose-Headers', 'X-Total-Count');
 
   // Set to true if you need the website to include cookies in the requests sent
@@ -32,7 +31,10 @@ app.use((_, res, next) => {
 
   // Pass to next layer of middleware
   next();
-})
+});
+
+app.use(bodyParser.urlencoded({extended: false}));
+app.use(bodyParser.json());
 
 app.use('/pages', page);
 

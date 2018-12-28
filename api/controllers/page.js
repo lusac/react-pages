@@ -13,9 +13,13 @@ exports.pageCreate = function (req, res) {
 };
 
 exports.pageUpdate = function (req, res) {
+  const page = {
+    name: req.body.name,
+    content: req.body.content
+  };
   Page
-    .findByIdAndUpdate(req.params.id, {$set: req.body})
-    .then(() => res.json('Product udpated.'))
+    .findByIdAndUpdate(req.params.id, {$set: page})
+    .then(() => { res.json({ msg: 'Product udpated.', data: page }) })
     .catch(err => err);
 };
 

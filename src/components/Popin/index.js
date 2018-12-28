@@ -49,8 +49,8 @@ const PopinItem = ({ item, selected, onClickHandler} = {}) => {
   return (
     <div className={classNames} onClick={onClickHandler.bind(this, item.id)}>
       <figure>
-        <img src={item.RenderCMA.getThumbnail()} />
-        <figcaption>{item.RenderCMA.getName()}</figcaption>
+        <img src={item.thumbnail} />
+        <figcaption>{item.name}</figcaption>
       </figure>
     </div>
   )

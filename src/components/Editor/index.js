@@ -11,14 +11,22 @@ const AddButton = ({ onClickHandler } = {}) => {
   )
 }
 
-const AddedComponents = ({ components, onRemoveClick } = {}) => {
+const Content = ({ content, onRemoveClick } = {}) => {
+  const getComponent = type => {
+    const component = components.default.filter(c => c.type === type)
+    return component.length ? component[0] : null
+  }
+
   return (
-    components.map((Component, i) => (
-      <div key={i} className="editor__component">
-        (<span onClick={onRemoveClick.bind(this, i)}>remove</span>)
-        {<Component.RenderCMA />}
-      </div>
-    ))
+    content.map((component, i) => {
+      const Component = getComponent(component.type)
+      return (
+        <div key={i} className="editor__component">
+          (<span onClick={onRemoveClick.bind(this, i)}>remove</span>)
+          {<Component.RenderCMA />}
+        </div>
+      )
+    })
   )
 }
 
@@ -27,7 +35,17 @@ export default class Editor extends React.Component {
     searchTerm: '',
     showPopin: false,
     selectedItem: null,
-    addedComponents: []
+    content: [{
+      type: 'Header',
+      content: {
+        title: 'my index'
+      }
+    }, {
+      type: 'Box',
+      content: {
+        value: 'my box content'
+      }
+    }]
   }
 
   searchOnChange(e) {
@@ -43,13 +61,15 @@ export default class Editor extends React.Component {
 
   addComponent(component) {
     this.setState({
-      addedComponents: [...this.state.addedComponents, component]
+      content: [
+        ...this.state.content, component
+      ]
     })
     this.togglePopin()
   }
 
   removeComponent(index) {
-    const updateComponents = this.state.addedComponents.filter((c, i) => i !== index)
+    const updateComponents = this.state.addedComponents.filter((_, i) => i !== index)
     this.setState({
       addedComponents: updateComponents
     })
@@ -66,7 +86,7 @@ export default class Editor extends React.Component {
       return components.default
 
     return components.default.filter((c) => {
-      if (c.RenderCMA.getName().toLocaleLowerCase().indexOf(this.state.searchTerm.toLocaleLowerCase()) >= 0) {
+      if (c.name.toLocaleLowerCase().indexOf(this.state.searchTerm.toLocaleLowerCase()) >= 0) {
         return c
       }
       return false
@@ -76,11 +96,13 @@ export default class Editor extends React.Component {
   render() {
     return (
       <div className="editor">
-        <AddedComponents
-          components={this.state.addedComponents}
+        <Content
+          content={this.state.content}
           onRemoveClick={this.removeComponent.bind(this)} />
 
         <AddButton onClickHandler={this.togglePopin.bind(this)} />
+
+        <p><br />{JSON.stringify(this.state.content)}</p>
 
         {this.state.showPopin &&
           <Popin
